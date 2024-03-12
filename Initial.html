@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="Initial.css">
+</head>
+<body style="background-color: wheat;">
+    
+          <!--Initial Form-->
+    <div class="popup-container">
+        <form>
+            <label for="input1">Enter your name:</label>
+            <input type="text" id="input1" class="form-input" required>
+    
+            <label for="input2">Enter your year:</label>
+            <input type="text" id="input2" class="form-input" required>
+    
+            <label for="input3">Enter your branch:</label>
+            <input type="text" id="input3" class="form-input" required>
+            <button type="submit" class="submit-button" onclick="handlesubmit()">Submit</button>
+
+        </form>
+
+    </div>
+</body>
+
+<script>
+    //Initial Form
+    let name = "";
+    let year = "";
+    let branch = "";
+    let formname = document.getElementById("input1")
+    let formyear = document.querySelector("#input2") 
+    let formbranch = document.querySelector("#input3")
+    /*if(name!=""||name!=null||name!=undefined)
+    {
+        document.getElementsByClassName("popup-container")[0].style.display = "none";
+    }*/
+    function handlesubmit()
+    {
+        event.preventDefault();
+        name = formname.value;
+        year = formyear.value;
+        branch = formbranch.value;
+        document.getElementsByClassName("popup-container")[0].style.display = "none";
+
+     var formData = {
+                name: name,
+                year: year,
+                branch: branch
+            };
+
+            var jsonData = JSON.stringify(formData);
+
+            localStorage.setItem('formData', jsonData);
+
+        }
+
+        function loadFormData() {
+            var jsonData = localStorage.getItem('formData');
+
+            var formData = JSON.parse(jsonData);
+
+            name = formData.name;
+            year = formData.year;
+            branch = formData.branch;
+        }
+        loadFormData();
+</script>
+
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="codemirror-5.65.16/lib/codemirror.css">
+    <script src="codemirror-5.65.16/lib/codemirror.js"></script>
+    <script src="codemirror-5.65.16/mode/clike/clike.js"></script>
+    <link rel="stylesheet" href="codemirror-5.65.16/theme/dracula.css">
+    <script src="codemirror-5.65.16/addon/edit/closebrackets.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <script src="codemirror-5.65.16/mode/python/python.js"></script>
+    <link rel="stylesheet" href="Real_style.css">
+</head>
+
+<body style="background-color: wheat;">
+       <div id="visibility">
+        <div class="heading">
+            <img id="Logo" src="LOGO.png">
+            <img id="Encarta" src="encarta_logo_light.png">
+        </div>
+
+        <div class="row m-3">
+        <div class="col">
+            <div class="d-flex justify-content-between mb-2 bg-dark rounded p-2">
+                <div class="col-12 w-25">
+                    <label class="visually-hidden" for="inlineFormSelectPref">Preference</label>
+                    <select class="form-select" id="inlineFormSelectPref">
+                        <option selected>Choose...</option>
+                        <option value="Cpp">C++</option>
+                        <option value="C">C</option>
+                        <option value="Python">Python</option>
+                        <option value="Java">Java</option>
+                    </select>
+                </div>
+                <div>
+                    <button type="button" id="run" class="btn btn-success"><i class="bi bi-play-fill">Run</i></button>
+                </div>
+            </div>
+            <textarea type="text" id="editor" class="form-control" aria-label="First name"></textarea>
+        </div>
+        <div class="col d-flex flex-column rounded bg-dark px-4">
+            <div class = "inputbox" style="margin-top: 3vh;">
+                <label for="Input" class="text-light">Input</label>
+                <textarea type="text" id="input" class="form-control" placeholder="Enter your input here.."></textarea>
+            </div>
+            <div class="outputbox">
+                <label for="Output" class="text-light">Output</label>
+                <textarea type="text" id="output" class="form-control" placeholder="Output will be displayed here.."></textarea>
+            </div>
+        </div>
+    </div>
+       </div>
+
+
+        <div id="violation-message"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); color: white; font-size: 24px; text-align: center; padding-top: 20vh;">
+            <h2>Violation: You switched tabs You are disqualified!</h2>
+            <button onclick="showAdminAccess()">Admin access</button>
+        </div>
+
+    <div id="blackout"></div>
+
+</body>
+
+<script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+        mode: "text/x-c++src",
+        theme: "dracula",
+        lineNumbers: true,
+        autoCloseBrackets: true,
+
+    })
+    var width = window.innerWidth
+    var input = document.getElementById("input")
+    var output = document.getElementById("output")
+    var run = document.getElementById("run")
+    editor.setSize(0.7 * width, "500")
+    var option = document.getElementById("inlineFormSelectPref")
+    option.addEventListener("change", function () {
+        if (option.value == "Java") {
+            editor.setOption("mode", "text/x-java")
+        }
+        else if (option.value == "python") {
+            editor.setOption("mode", "text/x-python")
+        }
+        else {
+            editor.setOption("mode", "text/x-c++src")
+        }
+    })
+    var code;
+    run.addEventListener("click", async function () {
+        code = {
+            code: editor.getValue(),
+            input: input.value,
+            lang: option.value
+        }
+        console.log(code)
+        var oData = await fetch("http://localhost:8000/compile", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(code)
+        })
+        var d = await oData.json()
+        output.value = d.output
+    })
+
+    function handleVisibilityChange() {
+        if (document.visibilityState === "hidden") {
+
+            document.getElementById("violation-message").style.display = "block";
+            document.getElementById("visibility").style.display = "none";
+            localStorage.setItem("hiddenState", "hidden");
+        }
+    }
+
+
+    var storedState = localStorage.getItem("hiddenState");
+    if (storedState === "hidden") {
+        document.getElementById("violation-message").style.display = "block";
+        document.getElementById("visibility").style.display = "none";
+    }
+
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+
+    function showAdminAccess() {
+        var password = prompt("Enter admin password:");
+
+        if (password === "MbmEncarta") {
+            document.getElementById("violation-message").style.display = "none";
+            document.getElementById("visibility").style.display = "block";
+            localStorage.removeItem("hiddenState");
+        } else {
+            alert("Incorrect password!");
+        }
+    } 
+
+    function hideBlackout() {
+  var blackout = document.getElementById("blackout");
+  blackout.style.display = "none";
+  setTimeout(showblackout, 10000);
+}
+
+function showblackout() {
+    var blackout = document.getElementById("blackout");
+  blackout.style.display = "block";
+  setTimeout(hideBlackout, 1000);
+}
+
+hideBlackout()
+
+</script>
+
+</html>

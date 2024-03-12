@@ -1,0 +1,104 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: wheat;
+}
+
+.heading {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: wheat;
+    color: white;
+}
+
+#Logo, #Encarta {
+    max-height: 50px;
+    margin-right: 10px;
+}
+
+.navbar {
+    width: 100px;
+    height: 86vh;
+    background-color: #333;
+    position: fixed;
+    left: 0;
+    top: 70px; 
+    overflow-x: hidden;
+    padding-top: 0px;
+    margin-top: 0;
+}
+
+#qu_head
+{
+    text-align: center; 
+    color: aliceblue; 
+    width: 100%;
+    padding-bottom: 2vh;
+    border-bottom: 2px white solid;
+    font-weight: bolder;
+}
+
+.navbar button {
+    padding-left:45px; 
+    cursor: pointer; 
+    background-color:  transparent; 
+    border : transparent 0px ; 
+    color: white ; 
+    padding-bottom: 20px; 
+}
+
+.navbar button:hover {
+    background-color: #555;
+}
+
+.content {
+    margin-left: 200px;
+    padding: 16px;
+}
+
+#terminal
+{
+    padding-top: 0.5vh;
+    position: relative;
+    left : -1.5px;
+}
+
+.inputbox
+{
+    height: 20%;
+    margin-top: 3vh;
+    align-items: center;
+}
+
+.outputbox
+{
+    margin-top: 5vh;
+    height: 80%;
+    align-items: center;
+}
+
+#input
+{
+    margin-top: 1vh;
+    height: 100%;
+    width: 90%;
+    font-size: larger;
+    padding-left: 1vb;
+    padding-top: 1vh;
+    padding-right: 1vb;
+    padding-bottom: 1vh;
+}
+
+#output
+{
+    margin-top: 1vh;
+    height: 75%;
+    width: 90%;
+    font-size: larger;
+    padding-left: 1vb;
+    padding-top: 1vh;
+    padding-right: 1vb;
+    padding-bottom: 1vh;
+}
+

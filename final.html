@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final</title>
+    <link rel="stylesheet" href="Real_style.css">
+    <link rel="stylesheet" href="final.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="codemirror-5.65.16/lib/codemirror.css">
+    <script src="codemirror-5.65.16/lib/codemirror.js"></script>
+    <script src="codemirror-5.65.16/mode/clike/clike.js"></script>
+    <link rel="stylesheet" href="codemirror-5.65.16/theme/dracula.css">
+    <script src="codemirror-5.65.16/addon/edit/closebrackets.js"></script>
+    <script src="codemirror-5.65.16/mode/python/python.js"></script>
+</head>
+
+<body style="overflow: hidden;">
+    <!--Initial Form-->
+    <div class="popup-container" style="position: absolute;">
+        <form>
+            <label for="input1">Enter your name:</label>
+            <input type="text" id="input1" class="form-input" required>
+
+            <label for="input2">Enter your year:</label>
+            <input type="text" id="input2" class="form-input" required>
+
+            <label for="input3">Enter your branch:</label>
+            <input type="text" id="input3" class="form-input" required>
+            <button type="submit" class="submit-button" onclick="handlesubmit()">Submit</button>
+
+        </form>
+
+    </div>
+
+    <div id="visibility" style="filter: blur(30px);  position: relative;">
+        <!--blackout screen-->
+        <div id="blackout"></div>
+
+        <!--Heading-->
+        <div class="heading">
+            <img id="Logo" src="LOGO.png">
+            <img id="Encarta" src="encarta_logo_light.png">
+        </div>
+
+        <!--Navbar-->
+        <div class="navbar">
+            <p id="qu_head">Questions</p>
+            <div id="Questions">
+                <button data-questionhead="Code an Merge Sort Function">Q1. Merge Sort</button>
+                <button data-questionhead="Code an Quick Sort Function">Q2. Quick Sort</button>
+                <button data-questionhead="Code an Linear Search Function">Q3. Linear Search</button>
+            </div>
+        </div>
+
+        <!--Mian content-->
+        <div id="content" style="padding-left: 8.5vw;">
+            <h2 id="question">Code an Merge Sort Function</h2>
+            <div style="display: flex; width: 69.6vw; justify-content: space-between;">
+                <div>
+                    <select class="form-select" id="inlineFormSelectPref" style="font-size: 105%;">
+                        <option selected>Choose...</option>
+                        <option value="Cpp">C++</option>
+                        <option value="C">C</option>
+                        <option value="Python">Python</option>
+                        <option value="Java">Java</option>
+                    </select>
+                </div>
+                <div>
+                    <button style="align-self: flex-end; font-size: 110%; background-color: rgba(0, 128, 0, 0.543);"
+                        type="button" id="run" class="btn btn-success"><i class="fa-solid fa-play"></i> Run</button>
+                        <button style="align-self: flex-end; font-size: 110%; background-color: rgba(0, 128, 0, 0.543);"
+                        type="button" id = "submit" class="btn btn-success"><i class="fa-solid fa-check"></i> Sumbit</button>
+                </div>
+
+            </div>
+            <div class="row m-3">
+                <div class="col">
+                    <div id="terminal">
+                        <textarea type="text" id="editor" class="form-control" aria-label="First name"></textarea>
+                    </div>
+                </div>
+
+                <!--Input and Output Field-->
+                <div style="position: absolute; top: 80px; left: 79%; background-color: black; color: aliceblue; text-align: center
+    ; border-radius: 4px; height: 68vh; width: 260px; height: 84vh;">
+                    <div class="inputbox " style="display: flex; flex-direction: column;   margin-top: 3vh;">
+                        <label for="Input" class="text-light">Input</label>
+                        <textarea type="text" id="input" class="form-control"
+                            placeholder="Enter your input here.."></textarea>
+                    </div>
+                    <div class="outputbox">
+                        <label for="Output" class="text-light"
+                            style="display: flex; flex-direction: column">Output</label>
+                        <textarea type="text" id="output" class="form-control"
+                            placeholder="Output will be displayed here.."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <!--Violation message-->
+    <div id="violation-message"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); color: white; font-size: 24px; text-align: center; padding-top: 20vh;">
+        <h2>Violation: You switched tabs You are disqualified!</h2>
+        <button onclick="showAdminAccess()">Admin access</button>
+    </div>
+</body>
+<script>
+    document.getElementById('Questions').addEventListener('click', function (event) {
+        let questions = document.getElementById('question');
+        questions.textContent = event.target.getAttribute('data-questionhead');
+
+    })
+    let name = "";
+    let year = "";
+    let branch = "";
+    let formname = document.getElementById("input1")
+    let formyear = document.querySelector("#input2")
+    let formbranch = document.querySelector("#input3")
+    if (name = null) {
+        document.getElementsByClassName("popup-container")[0].style.display = "block";
+        document.getElementById('visibility').style.filter = "blur(30px)"
+    }
+
+    if (name != "" || name != null || name != undefined) {
+        loadFormData();
+        document.getElementsByClassName("popup-container")[0].style.display = "none";
+        document.getElementById('visibility').style.filter = "blur(0px)"
+    }
+
+    function handlesubmit() {
+        event.preventDefault();
+        name = formname.value;
+        year = formyear.value;
+        branch = formbranch.value;
+        document.getElementsByClassName("popup-container")[0].style.display = "none";
+        document.getElementById("visibility").style.filter = "blur(0px)"
+        var formData = {
+            name: name,
+            year: year,
+            branch: branch
+        };
+
+        var jsonData = JSON.stringify(formData);
+
+        localStorage.setItem('formData', jsonData);
+
+    }
+
+    function loadFormData() {
+        var jsonData = localStorage.getItem('formData');
+
+        var formData = JSON.parse(jsonData);
+        if (formData.name != null || formData.name != undefined) {
+            name = formData.name;
+            year = formData.year;
+            branch = formData.branch;
+        }
+    }
+
+    var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+        mode: "text/x-c++src",
+        theme: "dracula",
+        lineNumbers: true,
+        autoCloseBrackets: true,
+
+    })
+    var width = window.innerWidth
+    var input = document.getElementById("input")
+    var output = document.getElementById("output")
+    var run = document.getElementById("run")
+    editor.setSize(0.7 * width, "500")
+    let option = document.getElementById("inlineFormSelectPref")
+    var sub = document.getElementById('submit');
+    sub.addEventListener("click", function () {
+   
+    let optioni = document.getElementById("inlineFormSelectPref")
+    if (optioni.value == "Java") {
+        var code1 = {
+        code: editor.getValue(),
+        input: input.value,
+        lang: option.value
+    };
+    var data = code1.code;
+    const blob = new Blob([data], {
+        type: 'text/plain'
+    });
+    const downloadlink = document.createElement('a');
+              downloadlink.download = "example.java";
+              downloadlink.href = window.URL.createObjectURL(blob); // Corrected typo here
+    downloadlink.click();
+        }
+        else if (option.value == "Python") {
+            var code1 = {
+        code: editor.getValue(),
+        input: input.value,
+        lang: option.value
+    };
+    var data = code1.code;
+    const blob = new Blob([data], {
+        type: 'text/plain'
+    });
+    const downloadlink = document.createElement('a');
+             downloadlink.download = "example.py";
+             downloadlink.href = window.URL.createObjectURL(blob); // Corrected typo here
+    downloadlink.click();
+        }
+        else {
+            var code1 = {
+        code: editor.getValue(),
+        input: input.value,
+        lang: option.value
+    };
+    var data = code1.code;
+    const blob = new Blob([data], {
+        type: 'text/plain'
+    });
+    const downloadlink = document.createElement('a');
+            downloadlink.download = "example.cpp";
+            downloadlink.href = window.URL.createObjectURL(blob); // Corrected typo here
+    downloadlink.click();
+        }
+    
+});
+    option.addEventListener("change", function () {
+        if (option.value == "Java") {
+            editor.setOption("mode", "text/x-java")
+        }
+        else if (option.value == "python") {
+            editor.setOption("mode", "text/x-python")
+        }
+        else {
+            editor.setOption("mode", "text/x-c++src")
+        }
+    })
+    var code;
+    run.addEventListener("click", async function () {
+        code = {
+            code: editor.getValue(),
+            input: input.value,
+            lang: option.value
+        }
+        console.log(code)
+        var oData = await fetch("http://localhost:8000/compile", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(code)
+        })
+        var d = await oData.json()
+        output.value = d.output
+     
+    })
+
+
+
+    // function handleVisibilityChange() {
+    //     if (document.visibilityState === "hidden") {
+
+    //         document.getElementById("violation-message").style.display = "block";
+    //         document.getElementById("visibility").style.display = "none";
+    //         localStorage.setItem("hiddenState", "hidden");
+    //     }
+    // }
+
+
+    var storedState = localStorage.getItem("hiddenState");
+    if (storedState === "hidden") {
+        document.getElementById("violation-message").style.display = "block";
+        document.getElementById("visibility").style.display = "none";
+    }
+
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+
+    function showAdminAccess() {
+        var password = prompt("Enter admin password:");
+
+        if (password === "MbmEncarta") {
+            document.getElementById("violation-message").style.display = "none";
+            document.getElementById("visibility").style.display = "block";
+            localStorage.removeItem("hiddenState");
+        } else {
+            alert("Incorrect password!");
+        }
+    }
+
+    function hideBlackout() {
+        var blackout = document.getElementById("blackout");
+        blackout.style.display = "none";
+        setTimeout(showblackout, 10000);
+    }
+
+    function showblackout() {
+        var blackout = document.getElementById("blackout");
+        blackout.style.display = "block";
+        setTimeout(hideBlackout, 1000);
+    }
+
+
+    hideBlackout()
+
+    
+
+</script>
+
+</html>
